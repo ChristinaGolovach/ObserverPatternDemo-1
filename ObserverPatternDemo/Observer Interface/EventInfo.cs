@@ -15,7 +15,7 @@ namespace ObserverPatternDemo
         public static readonly EventInfo Empty;
         static EventInfo() => Empty = new EventInfo();
         /// <summary>
-        /// Initializes a new instance of the EventInfo /> class.
+        /// Initializes a new instance of the <see cref="T:System.EventArgs" /> class.
         /// </summary>
         public EventInfo() { }
 

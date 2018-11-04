@@ -1,12 +1,44 @@
-﻿using ObserverPatternDemo.Implemantation.Observable;
+﻿using System;
+using ObserverPatternDemo.Implemantation.Observable;
 
 namespace ObserverPatternDemo.Implemantation.Observers
 {
-    public class CurrentConditionsReport : IObserver<WeatherInfo>
+    /// <summary>
+    /// Represent a class for working current weather data.
+    /// </summary>
+    public class CurrentConditionsReport : Report
     {
-        public void Update(IObservable<WeatherInfo> sender, WeatherInfo info)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public CurrentConditionsReport() { } 
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="subject">
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="subject"/> is null.
+        /// </exception>
+        public CurrentConditionsReport(IObservable<WeatherInfo> subject) : base(subject) { }
+
+        /// <summary>
+        /// Show current weather data.
+        /// </summary>
+        /// <returns>
+        /// String with current weather data.
+        /// </returns>
+        public override string ShowReport()
         {
-            throw new System.NotImplementedException();
+            return $"The current weather indicators are: Temperature is {Info.Temperature}, Humidity is {Info.Humidity}, Pressure is {Info.Pressure}.";
+        }
+
+        protected override void UpdateDateInReport(WeatherInfo info)
+        {
+            info = info ?? throw new ArgumentNullException($"The {nameof(info)} can not be null");
+
+            this.Info = info.Clone(); 
         }
     }
 }
