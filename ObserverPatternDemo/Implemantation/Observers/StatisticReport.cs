@@ -35,7 +35,10 @@ namespace ObserverPatternDemo.Implemantation.Observers
         /// </returns>
         public override string ShowReport()
         {
-            return $"The average weather indicators are: Temperature is {Info.Temperature}, Humidity is {Info.Humidity}, Pressure is {Info.Pressure}.";
+            string report = $"The average weather indicators are: Temperature is {Info.Temperature}, Humidity is {Info.Humidity}, Pressure is {Info.Pressure}.";
+            Console.WriteLine(report);
+
+            return report;           
         }
 
         protected override void UpdateDateInReport(WeatherInfo info)
@@ -49,6 +52,8 @@ namespace ObserverPatternDemo.Implemantation.Observers
             infoHistory.Add(newInfo);
 
             CalculateReportData();
+
+            ShowReport();
         }
 
         private void CalculateReportData()

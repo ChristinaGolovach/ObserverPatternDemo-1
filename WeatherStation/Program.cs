@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,36 +13,15 @@ namespace WeatherStation
         static void Main(string[] args)
         {
             WeatherInfo weatherInfo = new WeatherInfo() { Temperature = 1, Humidity = 2, Pressure = 2, };
-            WeatherData weatherData = new WeatherData();
+            WeatherData weatherData = new WeatherData();                      
 
             Report currentReport = new CurrentConditionsReport(weatherData);
             Report statisticReport = new StatisticReport(weatherData);
 
-            weatherData.SetNewWeatherInfo(weatherInfo);
+           weatherData.Start(5);
 
-            Console.WriteLine(currentReport.ShowReport());
-            Console.WriteLine(statisticReport.ShowReport());
-            Console.WriteLine();
+           Console.ReadLine();
 
-            weatherInfo.Humidity = 45;
-            weatherInfo.Temperature = 32;
-            weatherData.SetNewWeatherInfo(weatherInfo);
-
-            Console.WriteLine(currentReport.ShowReport());
-            Console.WriteLine(statisticReport.ShowReport());
-            Console.WriteLine();
-
-            currentReport.Unsubscribe();
-
-            weatherInfo.Humidity = -74;
-            weatherInfo.Temperature = -62;
-            weatherData.SetNewWeatherInfo(weatherInfo);
-
-            Console.WriteLine(currentReport.ShowReport());
-            Console.WriteLine(statisticReport.ShowReport());
-
-
-            Console.ReadLine();
-         }
+        }
     }
 }

@@ -31,14 +31,19 @@ namespace ObserverPatternDemo.Implemantation.Observers
         /// </returns>
         public override string ShowReport()
         {
-            return $"The current weather indicators are: Temperature is {Info.Temperature}, Humidity is {Info.Humidity}, Pressure is {Info.Pressure}.";
+            string report = $"The current weather indicators are: Temperature is {Info.Temperature}, Humidity is {Info.Humidity}, Pressure is {Info.Pressure}.";
+            Console.WriteLine(report);
+
+            return report;
         }
 
         protected override void UpdateDateInReport(WeatherInfo info)
         {
             info = info ?? throw new ArgumentNullException($"The {nameof(info)} can not be null");
 
-            this.Info = info.Clone(); 
+            this.Info = info.Clone();
+
+            ShowReport();
         }
     }
 }

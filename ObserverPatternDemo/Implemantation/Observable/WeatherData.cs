@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 
 namespace ObserverPatternDemo.Implemantation.Observable
@@ -10,6 +11,10 @@ namespace ObserverPatternDemo.Implemantation.Observable
     {
         private List <IObserver<WeatherInfo>> observers;
         private WeatherInfo info;
+        private int temperature;
+        private int humidity;
+        private int pressure;
+        private Random random;
 
         /// <summary>
         /// Get info about weather. Private set weather info.
@@ -17,11 +22,11 @@ namespace ObserverPatternDemo.Implemantation.Observable
         /// <exception cref="ArgumentNullException">
         /// Thrown when value is null.
         /// </exception>
-        public WeatherInfo Info
-        {
-            get => info;
-            private set => info = value ?? throw new ArgumentNullException($"The {nameof(Info)} can not be null.");
-        }
+        //public WeatherInfo Info
+        //{
+        //    get => info;
+        //    private set => info = value ?? throw new ArgumentNullException($"The {nameof(Info)} can not be null.");
+        //}
 
         /// <summary>
         /// Constructor.
@@ -29,6 +34,8 @@ namespace ObserverPatternDemo.Implemantation.Observable
         public WeatherData()
         {
             observers = new List<IObserver<WeatherInfo>>();
+            random = new Random();
+            info = new WeatherInfo();
         }
 
         /// <summary>
@@ -43,7 +50,7 @@ namespace ObserverPatternDemo.Implemantation.Observable
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="info"/> or <paramref name="sender"/> is null.
         /// </exception>
-        public void Notify(IObservable<WeatherInfo> sender, WeatherInfo info)
+        void IObservable<WeatherInfo>.Notify(IObservable<WeatherInfo> sender, WeatherInfo info)
         {
             CheckInputData(sender, info);
 
@@ -89,18 +96,42 @@ namespace ObserverPatternDemo.Implemantation.Observable
         }
 
         /// <summary>
-        /// Performs updating of inner data of weather and call <see cref="Notify"/>.
+        /// Simulates the work station.
         /// </summary>
-        /// <param name="info">
-        /// A new data of weather.
+        /// <param name="count">
+        /// Amount of the generation of new weather data.
         /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Trown when <paramref name="info"/> is null.
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="count"/> less or equal 0.
         /// </exception>
-        public void SetNewWeatherInfo(WeatherInfo info)
-        {           
-            Info = info;
-            Notify(this, info);  
+        public void Start(int count)
+        {
+            if (count <= 0)
+            {
+                throw new ArgumentException($"The {nameof(count)} must be more than zero.");
+            }
+
+            SetNewWeatherInfo(count);
+        }
+
+        private void SetNewWeatherInfo(int count)
+        {
+            for (int i=0; i<=count; i++)
+            {
+                temperature = random.Next(-20, 30);
+                humidity = random.Next(10, 80);
+                pressure = random.Next(10, 120);
+
+                info.Temperature = temperature;
+                info.Humidity = humidity;
+                info.Pressure = pressure;
+
+                (this as IObservable<WeatherInfo>).Notify(this, info);
+
+                Console.WriteLine(Environment.NewLine);
+                
+                Thread.Sleep(2000);
+            }
         }
 
         private void CheckInputData(IObservable<WeatherInfo> sender, WeatherInfo info)
