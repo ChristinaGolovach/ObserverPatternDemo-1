@@ -54,6 +54,10 @@
       <Project>{3552d999-ccb9-4177-9445-5f1a71864792}</Project>
       <Name>ObserverPatternDemo</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ObserverPatternWithEvent\ObserverPatternWithEvent.csproj">
+      <Project>{4a151516-83f9-47b6-a0f3-cedf6e4c2fff}</Project>
+      <Name>ObserverPatternWithEvent</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

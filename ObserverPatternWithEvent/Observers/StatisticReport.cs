@@ -14,11 +14,6 @@ namespace ObserverPatternWithEvent.Observers
 
         public StatisticReport(WeatherData weatherData) : base (weatherData) { }  
 
-        protected override void UpdateDataInReport(object sender, WeatherInfoEventArgs weatherInfoEventArgs)
-        {
-            weatherHistory.Add(weatherInfoEventArgs.Clone());
-        }
-
         public override string ShowReport()
         {
             CalculateReportData();
@@ -26,6 +21,11 @@ namespace ObserverPatternWithEvent.Observers
             string report = $"Statistic report - The average weather indicators are: Temperature is {averageTemperature}, Humidity is {averageHumidity}, Pressure is {averagePressure}.";
 
             return report;
+        }
+
+        protected override void UpdateDataInReport(object sender, WeatherInfoEventArgs weatherInfoEventArgs)
+        {
+            weatherHistory.Add(weatherInfoEventArgs.Clone());
         }
 
         private void CalculateReportData()

@@ -7,15 +7,8 @@ namespace ObserverPatternWithEvent
     {
         private Timer timer;
 
-        // Register/Unregister in pettern 
         public event EventHandler<WeatherInfoEventArgs> NewWeatherInfo = delegate { };
-
-        // event handler - Notify in pattern
-        protected virtual void OnNewWeatherInfo(WeatherInfoEventArgs e)
-        {
-            NewWeatherInfo?.Invoke(this, e);
-        }
-
+        
         public void SetNewWeatherInfo(int temperature, int humidity, int pressure)
         {
             OnNewWeatherInfo(new WeatherInfoEventArgs(temperature, humidity, pressure));
@@ -24,6 +17,16 @@ namespace ObserverPatternWithEvent
         public void StartWork()
         {
             timer = new Timer(GenerateWeaherData, this, 0, 2000);
+        }
+
+        protected virtual void OnNewWeatherInfo(WeatherInfoEventArgs e)
+        {
+            if (ReferenceEquals(e, null))
+            {
+                throw new ArgumentNullException($"The {typeof(WeatherInfoEventArgs)} can not be null.");
+            }
+
+            NewWeatherInfo?.Invoke(this, e);
         }
 
         private void GenerateWeaherData(object stateInfo)
@@ -36,6 +39,5 @@ namespace ObserverPatternWithEvent
 
             SetNewWeatherInfo(temperature, humidity, pressure);
         }
-
     }
 }

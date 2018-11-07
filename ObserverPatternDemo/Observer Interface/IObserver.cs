@@ -11,6 +11,6 @@
         /// </summary>
         ///<param name="sender">The object that is to raised notifications.</param>
         ///<param name="info">The current notification information.</param>
-        void Update(IObservable<T> sender, T info);
+        void Update(object sender, T info);
     }
 }

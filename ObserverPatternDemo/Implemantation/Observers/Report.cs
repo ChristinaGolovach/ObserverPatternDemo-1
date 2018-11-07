@@ -57,7 +57,7 @@ namespace ObserverPatternDemo.Implemantation.Observers
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="info"/> or <paramref name="sender"/> is null.
         /// </exception>
-        public void Update(IObservable<WeatherInfo> sender, WeatherInfo info)
+        public void Update(object sender, WeatherInfo info)
         {
             CheckObservableSubject(sender, info);
 
@@ -103,7 +103,7 @@ namespace ObserverPatternDemo.Implemantation.Observers
 
         protected abstract void UpdateDateInReport(WeatherInfo info);
 
-        private void CheckObservableSubject(IObservable<WeatherInfo> subject, WeatherInfo info)
+        private void CheckObservableSubject(object subject, WeatherInfo info)
         {
             CheckObservableSubject(subject);
 
@@ -113,11 +113,11 @@ namespace ObserverPatternDemo.Implemantation.Observers
             }
         }
 
-        private void CheckObservableSubject(IObservable<WeatherInfo> subject)
+        private void CheckObservableSubject(object subject)
         {
             if (ReferenceEquals(subject, null))
             {
-                throw new ArgumentNullException($"The observable {typeof(IObservable<WeatherInfo>)} subject or sender can not be null;");
+                throw new ArgumentNullException($"The observable {nameof(subject)} subject or sender can not be null;");
             }
         }       
     }

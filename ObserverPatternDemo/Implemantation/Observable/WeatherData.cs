@@ -17,18 +17,6 @@ namespace ObserverPatternDemo.Implemantation.Observable
         private Random random;
 
         /// <summary>
-        /// Get info about weather. Private set weather info.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when value is null.
-        /// </exception>
-        //public WeatherInfo Info
-        //{
-        //    get => info;
-        //    private set => info = value ?? throw new ArgumentNullException($"The {nameof(Info)} can not be null.");
-        //}
-
-        /// <summary>
         /// Constructor.
         /// </summary>
         public WeatherData()
@@ -36,28 +24,6 @@ namespace ObserverPatternDemo.Implemantation.Observable
             observers = new List<IObserver<WeatherInfo>>();
             random = new Random();
             info = new WeatherInfo();
-        }
-
-        /// <summary>
-        /// Performs sending new info about weather to another classes.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="info">
-        /// A new info.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="info"/> or <paramref name="sender"/> is null.
-        /// </exception>
-        void IObservable<WeatherInfo>.Notify(IObservable<WeatherInfo> sender, WeatherInfo info)
-        {
-            CheckInputData(sender, info);
-
-            foreach (var item in observers)
-            {
-                item.Update(sender, info);
-            }
         }
 
         /// <summary>
@@ -114,6 +80,30 @@ namespace ObserverPatternDemo.Implemantation.Observable
             SetNewWeatherInfo(count);
         }
 
+        /// <summary>
+        /// Performs sending new info about weather to another classes.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="info">
+        /// A new info.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="info"/> or <paramref name="sender"/> is null.
+        /// </exception>
+        void IObservable<WeatherInfo>.Notify(WeatherInfo info) => Notify(info);
+
+        protected virtual void Notify(WeatherInfo info)
+        {
+            CheckInputData(info);
+
+            foreach (var item in observers)
+            {
+                item.Update(this, info);
+            }
+        }
+
         private void SetNewWeatherInfo(int count)
         {
             for (int i=0; i<=count; i++)
@@ -126,7 +116,7 @@ namespace ObserverPatternDemo.Implemantation.Observable
                 info.Humidity = humidity;
                 info.Pressure = pressure;
 
-                (this as IObservable<WeatherInfo>).Notify(this, info);
+                (this as IObservable<WeatherInfo>).Notify(info);
 
                 Console.WriteLine(Environment.NewLine);
                 
@@ -134,13 +124,8 @@ namespace ObserverPatternDemo.Implemantation.Observable
             }
         }
 
-        private void CheckInputData(IObservable<WeatherInfo> sender, WeatherInfo info)
+        private void CheckInputData(WeatherInfo info)
         {
-            if (ReferenceEquals(sender, null))
-            {
-                throw new ArgumentNullException($"The {nameof(sender)} can not be null.");
-            }
-
             if (ReferenceEquals(info, null))
             {
                 throw new ArgumentNullException($"The {nameof(info)} can not be null.");

@@ -4,7 +4,7 @@
     {
         public CurrentConditionsReport() { }
 
-        public CurrentConditionsReport(WeatherData weatherData) : base() { }
+        public CurrentConditionsReport(WeatherData weatherData) : base(weatherData) { }
 
 
         protected override void UpdateDataInReport(object sender, WeatherInfoEventArgs weatherInfoEventArgs)
